@@ -348,39 +348,93 @@
                 margin-bottom: 15px;
             }
 
-            /* কুইজ তথ্য টেবিল স্ট্যাক করা */
+            /* কুইজ তথ্য ফ্লেক্সবক্স লেআউট */
             .quiz-info table {
-                display: flex;
+                display: block;
             }
 
             .quiz-info table tbody {
+               
                 width: 100%;
             }
 
             .quiz-info tr {
                 display: flex;
-                flex-direction: column;
+                flex-wrap: wrap;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                margin-bottom: 10px;
-                padding: 10px 0;
-                align-items: center;
+                margin-bottom: 8px;
+                padding: 8px 0;
             }
 
             .quiz-info td {
                 display: block;
-                padding: 5px 0;
+                padding: 5px;
                 border: none;
                 text-align: left;
+                color: #d1d5db;
+            }
+
+            /* শুরুর তারিখ এবং শেষের তারিখ পূর্ণ প্রস্থ */
+            .quiz-info tr:nth-child(1) td,
+            .quiz-info tr:nth-child(2) td {
+                width: 100%;
+            }
+
+            /* টপিক এবং পরীক্ষার সময় পাশাপাশি */
+            .quiz-info tr:nth-child(3) td,
+            .quiz-info tr:nth-child(4) td {
+                width: 100%;
+                padding: 5px 8px;
+            }
+
+            /* টপিক এবং পরীক্ষার সময় পাশাপাশি */
+            .quiz-info tr:nth-child(3) td,
+            .quiz-info tr:nth-child(4) td {
+                width: 33.33%;
+                border-bottom: none;
+                margin-bottom: 0;
+                padding: 0;
+            }
+
+            /* টপিক এবং পরীক্ষার সময় পাশাপাশি */
+            .quiz-info tr:nth-child(3) td,
+            .quiz-info tr:nth-child(4) td {
+                display: inline-flex;
+            }
+
+            /* প্রশ্ন সংখ্যা, মোট মার্ক, পাস মার্ক একই সারিতে পাশাপাশি */
+            .quiz-info tr:nth-child(5),
+            .quiz-info tr:nth-child(6),
+            .quiz-info tr:nth-child(7) {
+                width: 33.33%;
+                border-bottom: none;
+                margin-bottom: 0;
+                padding: 0;
+            }
+
+            .quiz-info tr:nth-child(5) td,
+            .quiz-info tr:nth-child(6) td,
+            .quiz-info tr:nth-child(7) td {
+                width: 100%;
+                padding: 5px 8px;
+                text-align: center;
+            }
+
+            /* প্রশ্ন সংখ্যা, মোট মার্ক, পাস মার্কের জন্য কন্টেইনার */
+            .quiz-info tr:nth-child(5),
+            .quiz-info tr:nth-child(6),
+            .quiz-info tr:nth-child(7) {
+                display: inline-flex;
             }
 
             .quiz-info td:first-child {
-                font-size: 0.95rem;
+                font-size: 0.9rem;
                 color: #a5b4fc;
                 font-weight: 600;
             }
 
             .quiz-info td:last-child {
-                font-size: 0.9rem;
+                font-size: 0.85rem;
                 color: #d1d5db;
             }
 
@@ -497,7 +551,7 @@
                 <tr><td>শুরুর তারিখ</td><td><span id="startDate"></span></td></tr>
                 <tr><td>শেষের তারিখ</td><td><span id="endDate"></span></td></tr>
                 <tr><td>টপিক</td><td><span id="quizTopic"></span></td></tr>
-                <tr><td>পরীক্ষার সময়</td><td><span id="duration"></span> মিনিট</td></tr>
+                <tr><td>পরীক্ষার সময়</td><td><span id="duration"></span> &nbsp মিনিট</td></tr>
                 <tr><td>প্রশ্ন সংখ্যা</td><td><span id="totalQuestions"></span></td></tr>
                 <tr><td>মোট মার্ক</td><td><span id="totalMarks"></span></td></tr>
                 <tr><td>পাস মার্ক</td><td><span id="passMarks"></span></td></tr>
@@ -545,7 +599,7 @@
             topic: "সমাস",
             startDate: new Date('2025-06-13T16:00:00'),
             endDate: new Date('2025-06-15T23:59:59'),
-            duration: 15,
+            duration: 15 ,
             passMarks: 15,
             questions: [
                 {
