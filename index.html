@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>কুইজ পরীক্ষা</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Roboto:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0f1a, #1a1a2e);
+            margin: 0 auto;
+            min-height: 100vh;
+            padding: 20px;
+            color: #e2e8f0;
+        }
+
+        .container {
+            max-width: 850px;
+            width: 100%;
+            background: rgba(20, 20, 30, 0.9);
+            backdrop-filter: blur(12px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(99, 102, 241, 0.3);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .quiz-info, .name-input {
+            max-width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .quiz-info table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1rem;
+        }
+
+        .quiz-info td {
+            padding: 10px;
+            color: #d1d5db;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.3s;
+        }
+
+        .quiz-info td:first-child {
+            font-weight: 600;
+            color: #a5b4fc;
+        }
+
+        .quiz-info tr:hover {
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .name-input input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 10px;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .name-input input:focus {
+            outline: none;
+            border-color: #a5b4fc;
+            box-shadow: 0 0 10px rgba(165, 180, 252, 0.5);
+        }
+
+        .quiz-section, .result-section, .name-input {
+            max-width: 100%;
+            display: none;
+        }
+
+        .quiz-info {
+            display: block;
+        }
+
+        .start-quiz {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        h1 {
+            text-align: center;
+            font-family: 'Roboto', sans-serif;
+            font-size: 2.2rem;
+            color: #a5b4fc;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(165, 180, 252, 0.6);
+        }
+
+        .start-quiz button, .next-btn, .submit-btn, .download-btn {
+            background: linear-gradient(45deg, #6366f1, #a5b4fc);
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .start-quiz button:hover, .next-btn:hover, .submit-btn:hover, .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.8);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 15px rgba(99, 102, 241, 0.5); }
+            50% { box-shadow: 0 0 25px rgba(99, 102, 241, 0.8); }
+            100% { box-shadow: 0 0 15px rgba(99, 102, 241, 0.5); }
+        }
+
+        .progress-bar {
+            max-width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            height: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(45deg, #6366f1, #a5b4fc);
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .question {
+            max-width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .question h3 {
+            color: #a5b4fc;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .options {
+            max-width: 100%;
+        }
+
+        .options label {
+            display: block;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            margin: 6px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            color: #d1d5db;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .options label:hover {
+            background: rgba(99, 102, 241, 0.2);
+            transform: translateX(5px);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .options input:checked + span {
+            background: rgba(99, 102, 241, 0.4);
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+        }
+
+        .options input {
+            display: none;
+        }
+
+        .options span {
+            display: block;
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .timer {
+            max-width: 100%;
+            font-size: 1.3rem;
+            color: #ff4757;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 15px;
+            background: rgba(255, 71, 87, 0.1);
+            padding: 8px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
+        }
+
+        .result-section {
+            text-align: center;
+        }
+
+        .result-section h2 {
+            color: #a5b4fc;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+            text-shadow: 0 0 15px rgba(165, 180, 252, 0.6);
+        }
+
+        .result-details {
+            max-width: 100%;
+        }
+
+        .result-summary {
+            max-width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            text-align: left;
+        }
+
+        .result-card h4 {
+            color: #a5b4fc;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .result-card .option {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #d1d5db;
+        }
+
+        .option.correct {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            font-weight: 600;
+            border-color: #2ecc71;
+        }
+
+        .option.incorrect {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+            font-weight: 600;
+            border-color: #ff4757;
+        }
+
+        .result-card .explanation {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #d1d5db;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+        }
+
+        .result-card .marks {
+            font-size: 0.9rem;
+            color: #a5b4fc;
+            margin-top: 5px;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #a5b4fc;
+            margin-top: 15px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #a5b4fc;
+            margin-top: 15px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        canvas#confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* মোবাইল রেসপনসিভ স্টাইল */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+                border-radius: 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+                margin-bottom: 15px;
+            }
+
+            /* কুইজ তথ্য টেবিল স্ট্যাক করা */
+            .quiz-info table {
+                display: flex;
+            }
+
+            .quiz-info table tbody {
+                width: 100%;
+            }
+
+            .quiz-info tr {
+                display: flex;
+                flex-direction: column;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                margin-bottom: 10px;
+                padding: 10px 0;
+                align-items: center;
+            }
+
+            .quiz-info td {
+                display: block;
+                padding: 5px 0;
+                border: none;
+                text-align: left;
+            }
+
+            .quiz-info td:first-child {
+                font-size: 0.95rem;
+                color: #a5b4fc;
+                font-weight: 600;
+            }
+
+            .quiz-info td:last-child {
+                font-size: 0.9rem;
+                color: #d1d5db;
+            }
+
+            .start-quiz button, .next-btn, .submit-btn, .download-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                max-width: 100%;
+            }
+
+            .question h3 {
+                font-size: 1.1rem;
+            }
+
+            .options label {
+                padding: 10px;
+                margin: 5px 0;
+            }
+
+            .options span {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .timer {
+                font-size: 1.1rem;
+                padding: 6px;
+            }
+
+            .progress-bar {
+                height: 8px;
+                margin-bottom: 10px;
+            }
+
+            .result-section h2 {
+                font-size: 1.5rem;
+            }
+
+            .result-summary {
+                padding: 10px;
+            }
+
+            .result-card h4 {
+                font-size: 1.1rem;
+            }
+
+            .result-card .option {
+                font-size: 0.85rem;
+                padding: 8px;
+            }
+
+            .result-card .explanation {
+                font-size: 0.85rem;
+                padding: 8px;
+            }
+
+            .result-card .marks {
+                font-size: 0.85rem;
+            }
+
+            .quote {
+                font-size: 0.9rem;
+                padding: 6px;
+            }
+
+            .footer {
+                font-size: 0.8rem;
+                padding: 6px;
+            }
+        }
+
+        /* ট্যাবলেটের জন্য অতিরিক্ত অপটিমাইজেশন */
+        @media (min-width: 601px) and (max-width: 900px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .quiz-info td {
+                font-size: 0.95rem;
+            }
+
+            .start-quiz button, .next-btn, .submit-btn, .download-btn {
+                padding: 12px 25px;
+                font-size: 0.95rem;
+            }
+
+            .question h3 {
+                font-size: 1.2rem;
+            }
+
+            .result-card h4 {
+                font-size: 1.15rem;
+            }
+
+            .result-card .option {
+                font-size: 0.9rem;
+            }
+
+            .result-card .explanation {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>কুইজ পরীক্ষা - ১</h1>
+        <!-- কুইজ তথ্য -->
+        <div class="quiz-info" id="quizInfo">
+            <table>
+                <tr><td>শুরুর তারিখ</td><td><span id="startDate"></span></td></tr>
+                <tr><td>শেষের তারিখ</td><td><span id="endDate"></span></td></tr>
+                <tr><td>টপিক</td><td><span id="quizTopic"></span></td></tr>
+                <tr><td>পরীক্ষার সময়</td><td><span id="duration"></span> মিনিট</td></tr>
+                <tr><td>প্রশ্ন সংখ্যা</td><td><span id="totalQuestions"></span></td></tr>
+                <tr><td>মোট মার্ক</td><td><span id="totalMarks"></span></td></tr>
+                <tr><td>পাস মার্ক</td><td><span id="passMarks"></span></td></tr>
+            </table>
+            <p id="quizStatus" style="text-align: center; margin-top: 20px;"></p>
+            <div class="start-quiz" id="startQuizBtn" style="display: none;">
+                <button onclick="showNameInput()">কুইজ শুরু করুন</button>
+            </div>
+        </div>
+
+        <!-- নাম ইনপুট -->
+        <div class="name-input" id="nameInput">
+            <label for="studentName">আপনার নাম লিখুন:</label>
+            <input type="text" id="studentName" placeholder="আপনার নাম" required>
+            <div class="start-quiz">
+                <button onclick="submitName()">কুইজ শুরু</button>
+            </div>
+        </div>
+
+        <!-- কুইজ সেকশন -->
+        <div class="quiz-section" id="quizSection">
+            <div class="timer" id="timer">সময় বাকি: <span id="timeLeft"></span></div>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <form id="quizForm">
+                <!-- প্রশ্নগুলো এখানে ডায়নামিকভাবে যোগ হবে -->
+            </form>
+            <button class="next-btn" id="nextBtn" style="display: none;" onclick="nextQuestion()">পরবর্তী</button>
+            <button class="submit-btn" id="submitBtn" style="display: none;" onclick="submitQuiz()">জমা দিন</button>
+        </div>
+
+        <!-- রেজাল্ট সেকশন -->
+        <div class="result-section" id="resultSection">
+            <h2>আপনার ফলাফল</h2>
+            <div class="result-details" id="resultDetails"></div>
+            <div class="footer">Papel Edu-Care</div>
+        </div>
+    </div>
+    <canvas id="confetti"></canvas>
+
+    <script>
+        // কুইজ ডাটা: এখানে তারিখ, সময়, টপিক, প্রশ্ন ও পয়েন্ট এডিট করতে পারবি
+        const quizData = {
+            topic: "সমাস",
+            startDate: new Date('2025-06-13T16:00:00'),
+            endDate: new Date('2025-06-15T23:59:59'),
+            duration: 15,
+            passMarks: 15,
+            questions: [
+                {
+                    question: "কোনটি বহুব্রীহি সমাসের উদাহরণ?",
+                    options: ["ওলকপি", "কবিগুরু", "আটঘাট", "ঊনপাঁজুরে"],
+                    correct: 3,
+                    explanation: "ঊনপাঁজুরে মানে যার পাঁজর কম আছে। এই শব্দটি যে কাউকে বোঝায়, নিজে না হয়ে অন্যকে বোঝায় — তাই এটি বহুব্রীহি সমাস।",
+                    points: 2
+                },
+                {
+                    question: "কোনটি তৃতীয়া তৎপুরুষ সমাসের উদাহরণ?",
+                    options: ["অসীম", "তেলেভাজা", "মুখচন্দ্র", "ঘর-বাড়ি"],
+                    correct: 1,
+                    explanation: "‘তেলে ভাজা’ → ‘তেলে’ = তৃতীয়া বিভক্তি। বিভক্তি যুক্ত পদ থাকলে তা তৃতীয়া তৎপুরুষ সমাস।",
+                    points: 2
+                },
+                {
+                    question: "কর্মধারয় সমাসের উদাহরণ কোনটি?",
+                    options: ["পদ্মপাতা", "নীলপদ্ম", "পদ্মনয়ন", "পদ্মপলাশ"],
+                    correct: 1,
+                    explanation: "পদ্মের রঙ নীল → বিশেষণ (নীল) + বিশেষ্য (পদ্ম) → কর্মধারয়।",
+                    points: 2
+                },
+                {
+                    question: "কোনটি কর্মধারয় সমাসের উদাহরণ?",
+                    options: ["ইন্দ্রজিৎ", "একরোখা", "কালান্তর", "ইহকাল"],
+                    correct: 3,
+                    explanation: "‘ইহ’ (এই) বিশেষণ + ‘কাল’ বিশেষ্য = কর্মধারয় সমাস।",
+                    points: 2
+                },
+                {
+                    question: "কোনটি মধ্যপদলোপী কর্মধারয় সমাসের উদাহরণ?",
+                    options: ["গায়ে হলুদ", "চালকুমড়া", "ছয়ানি", "ছায়াছবি"],
+                    correct: 1,
+                    explanation: "চালের মতো কুমড়া → মধ্যবর্তী ‘এর মতো’ পদ লুপ্ত → মধ্যপদলোপী কর্মধারয়।",
+                    points: 2
+                },
+                {
+                    question: "মধ্যপদলোপী কর্মধারয় সমাসের উদাহরণ কোনটি?",
+                    options: ["ক্ষণস্থায়ী", "ঘরছাড়া", "হাসিমুখ", "ক্ষণস্থায়ী"],
+                    correct: 2,
+                    explanation: "হাসিতে মুখ → ‘তে’ পদটি লুপ্ত হয়েছে → মধ্যপদলোপী।",
+                    points: 2
+                },
+                {
+                    question: "কোনটি রূপক সমাসের উদাহরণ?",
+                    options: ["চাঁদমুখ", "ভবনদী", "বড়বাবু", "বাগানবাড়ি"],
+                    correct: 1,
+                    explanation: "ভবনের মতো নদী → উপমা নির্ভর → রূপক কর্মধারয়।",
+                    points: 2
+                },
+                {
+                    question: "'পাপমুক্ত' (পাপ হতে মুক্ত) কোন সমাস?",
+                    options: ["কর্মধারয়", "তৎপুরুষ", "বহুব্রীহি", "অব্যয়ীভাব"],
+                    correct: 1,
+                    explanation: "পঞ্চমী তৎপুরুষ সমাস (পাপ হতে মুক্ত)।",
+                    points: 2
+                },
+                {
+                    question: "'অহিনকুল' কোন সমাস?",
+                    options: ["কর্মধারয়", "বহুব্রীহি", "দ্বিগু", "দ্বন্দ্ব"],
+                    correct: 3,
+                    explanation: "অহি ও নকুল → দুটি সমান পদ → দ্বন্দ্ব সমাস।",
+                    points: 2
+                },
+                {
+                    question: "নীল যে অম্বর = নীলাম্বর, কোন সমাস?",
+                    options: ["বহুব্রীহি", "তৎপুরুষ", "কর্মধারয়", "অব্যয়ীভাব"],
+                    correct: 2,
+                    explanation: "নীল (বিশেষণ) + অম্বর (বিশেষ্য) → কর্মধারয়।",
+                    points: 2
+                },
+                {
+                    question: "“যে চালাক সেই চতুর = চালাকচতুর” — কোন সমাস?",
+                    options: ["দ্বন্দ্ব ", "কর্মধারয়", "তৎপুরুষ", "অব্যয়ীভাব"],
+                    correct: 1,
+                    explanation: "চালাক ও চতুর সমার্থক → সমানাধিকরণ কর্মধারয়।",
+                    points: 2
+                },
+                {
+                    question: "যে যে পদে সমাস হয়, তাদের প্রত্যেকটির নাম কী?",
+                    options: ["ব্যাসবাক্য", "সমস্ত পদ", "সমস্যমান পদ", "সমাসবাক্য"],
+                    correct: 2,
+                    explanation: "‘ইহ’ (এই) বিশেষণ + ‘কাল’ বিশেষ্য = কর্মধারয় সমাস।",
+                    points: 2
+                },
+                {
+                    question: "যে সমাসে পূর্বপদের বিভক্তি লোপ হয় না তাকে কী বলে?",
+                    options: ["নিত্য সমাস", "প্রাদি সমাস", "দ্বন্দ্ব সমাস", "অলুক সমাস"],
+                    correct: 3,
+                    explanation: "অলুক = বিভক্তি লুপ্ত হয়নি।",
+                    points: 2
+                },
+                {
+                    question: "‘জ্যোৎস্নারাত’ কোন সমাস?",
+                    options: ["দ্বিগু", "কর্মধারয়", "তৎপুরুষ", "বহুব্রীহি"],
+                    correct: 1,
+                    explanation: "জ্যোৎস্নার (বিশেষণ) + রাত (বিশেষ্য) = কর্মধারয়।",
+                    points: 2
+                },
+                {
+                    question: "‘অনুতাপ’ (তাপের পশ্চাৎ) কোন সমাস?",
+                    options: ["অব্যয়ীভাব", "তৎপুরুষ", "কর্মধারয়", "বহুব্রীহি"],
+                    correct: 0,
+                    explanation: "অব্যয় ‘অনু’ + তাপ → অব্যয়ীভাব সমাস।",
+                    points: 2
+                },
+                {
+                    question: "‘আশীবিষ’ (আশীতে বিষ যার) কোন সমাস?",
+                    options: ["তৎপুরুষ", "কর্মধারয়", "বহুব্রীহি", "অব্যয়ীভাব"],
+                    correct: 2,
+                    explanation: "যাদের আশিতে বিষ আছে — অন্য কাউকে বোঝায় → বহুব্রীহি।",
+                    points: 2
+                },
+                {
+                    question: "কোনটি বহুব্রীহি সমাস?",
+                    options: ["দশানন", "সুপুরুষ", "সাদাকালো", "চৌরাস্তা"],
+                    correct: 0,
+                    explanation: "যার দশটি মুখ আছে (রাবণ) → বহুব্রীহি।",
+                    points: 2
+                },
+                {
+                    question: "‘নীল যে অম্বর = নীলাম্বর’ – কোন সমাস?",
+                    options: ["বহুব্রীহি", "অব্যয়ীভাব", "তৎপুরুষ", "কর্মধারয়"],
+                    correct: 0,
+                    explanation: "যাঁর অম্বর নীল → বহুব্রীহি ব্যাসবাক্যে ব্যবহৃত।",
+                    points: 2
+                },
+                {
+                    question: "‘অবোধ’ (নাই বোধ যার) কোন সমাস?",
+                    options: ["অব্যয়ীভাব", "তৎপুরুষ", "কর্মধারয়", "বহুব্রীহি"],
+                    correct: 3,
+                    explanation: "যার বোধ নেই — অন্যকে বোঝায় → বহুব্রীহি।",
+                    points: 2
+                },
+                {
+                    question: "কোন সমাসের ব্যাসবাক্য হয় না?",
+                    options: ["নিত্য সমাস", "দ্বন্দ্ব সমাস", "তৎপুরুষ সমাস", "কর্মধারয় সমাস"],
+                    correct: 0,
+                    explanation: "নিত্য সমাসের ব্যাসবাক্য হয় না। এগুলোর অর্থ পৃথকভাবে ব্যাখ্যা করা যায় না।",
+                    points: 2
+                }
+        
+            ]
+        };
+
+        let studentName = '';
+        let currentQuestion = 0;
+        let userAnswers = [];
+
+        // টোটাল মার্ক ক্যালকুলেট করা
+        const totalMarks = quizData.questions.reduce((sum, q) => sum + q.points, 0);
+
+        // কুইজ তথ্য প্রদর্শন
+        function displayQuizInfo() {
+            try {
+                document.getElementById('startDate').textContent = quizData.startDate.toLocaleString('bn-BD');
+                document.getElementById('endDate').textContent = quizData.endDate.toLocaleString('bn-BD');
+                document.getElementById('quizTopic').textContent = quizData.topic;
+                document.getElementById('duration').textContent = quizData.duration;
+                document.getElementById('totalQuestions').textContent = quizData.questions.length;
+                document.getElementById('totalMarks').textContent = totalMarks;
+                document.getElementById('passMarks').textContent = quizData.passMarks;
+            } catch (error) {
+                console.error('Error in displayQuizInfo:', error);
+            }
+        }
+
+        // কুইজ স্ট্যাটাস চেক
+        function checkQuizStatus() {
+            try {
+                const now = new Date();
+                const quizStatus = document.getElementById('quizStatus');
+                const startQuizBtn = document.getElementById('startQuizBtn');
+
+                if (now < quizData.startDate) {
+                    quizStatus.textContent = "কুইজ এখনো শুরু হয়নি!";
+                } else if (now > quizData.endDate) {
+                    quizStatus.textContent = "কুইজ শেষ হয়ে গেছে!";
+                } else {
+                    quizStatus.textContent = "কুইজ চলছে! এখনই শুরু করুন।";
+                    startQuizBtn.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error in checkQuizStatus:', error);
+            }
+        }
+
+        // পেজ লোড হলে কুইজ তথ্য ও স্ট্যাটাস চেক
+        window.onload = function() {
+            displayQuizInfo();
+            checkQuizStatus();
+        };
+
+        // নাম ইনপুট দেখানো
+        function showNameInput() {
+            try {
+                document.getElementById('quizInfo').style.display = 'none';
+                document.getElementById('nameInput').style.display = 'block';
+            } catch (error) {
+                console.error('Error in showNameInput:', error);
+            }
+        }
+
+        // নাম জমা
+        function submitName() {
+            try {
+                const nameInput = document.getElementById('studentName');
+                if (nameInput.value.trim() === '') {
+                    alert('দয়া করে আপনার নাম লিখুন!');
+                    return;
+                }
+                studentName = nameInput.value.trim();
+                document.getElementById('nameInput').style.display = 'none';
+                startQuiz();
+            } catch (error) {
+                console.error('Error in submitName:', error);
+            }
+        }
+
+        // কুইজ শুরু
+        function startQuiz() {
+            try {
+                document.getElementById('quizSection').style.display = 'block';
+                showQuestion(currentQuestion);
+                startTimer();
+            } catch (error) {
+                console.error('Error in startQuiz:', error);
+            }
+        }
+
+        // প্রশ্ন দেখানো
+        function showQuestion(index) {
+            try {
+                const quizForm = document.getElementById('quizForm');
+                const q = quizData.questions[index];
+                quizForm.innerHTML = `
+                    <div class="question">
+                        <h3>${index + 1}. ${q.question} (${q.points} মার্ক)</h3>
+                        <div class="options">
+                            ${q.options.map((option, i) => `
+                                <label>
+                                    <input type="radio" name="question${index}" value="${i}" onchange="showNextButton()">
+                                    <span>${option}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                updateProgress();
+            } catch (error) {
+                console.error('Error in showQuestion:', error);
+            }
+        }
+
+        // প্রোগ্রেস বার আপডেট
+        function updateProgress() {
+            try {
+                const progress = document.getElementById('progress');
+                const percentage = ((currentQuestion + 1) / quizData.questions.length) * 100;
+                progress.style.width = `${percentage}%`;
+            } catch (error) {
+                console.error('Error in updateProgress:', error);
+            }
+        }
+
+        // নেক্সট বাটন দেখানো
+        function showNextButton() {
+            try {
+                const selected = document.querySelector(`input[name="question${currentQuestion}"]:checked`);
+                if (selected) {
+                    userAnswers[currentQuestion] = parseInt(selected.value);
+                    if (currentQuestion < quizData.questions.length - 1) {
+                        document.getElementById('nextBtn').style.display = 'block';
+                        document.getElementById('submitBtn').style.display = 'none';
+                    } else {
+                        document.getElementById('nextBtn').style.display = 'none';
+                        document.getElementById('submitBtn').style.display = 'block';
+                    }
+                }
+            } catch (error) {
+                console.error('Error in showNextButton:', error);
+            }
+        }
+
+        // পরবর্তী প্রশ্ন
+        function nextQuestion() {
+            try {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+                document.getElementById('nextBtn').style.display = 'none';
+            } catch (error) {
+                console.error('Error in nextQuestion:', error);
+            }
+        }
+
+        // টাইমার
+        let timeLeft = quizData.duration * 60;
+        function startTimer() {
+            try {
+                const timerDisplay = document.getElementById('timeLeft');
+                const timerInterval = setInterval(() => {
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        submitQuiz();
+                    } else {
+                        const minutes = Math.floor(timeLeft / 60);
+                        const seconds = timeLeft % 60;
+                        timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                        timeLeft--;
+                    }
+                }, 1000);
+            } catch (error) {
+                console.error('Error in startTimer:', error);
+            }
+        }
+
+        // কুইজ জমা
+        function submitQuiz() {
+            try {
+                const quizSection = document.getElementById('quizSection');
+                const resultSection = document.getElementById('resultSection');
+                const resultDetails = document.getElementById('resultDetails');
+                let score = 0;
+
+                quizData.questions.forEach((q, index) => {
+                    if (userAnswers[index] === q.correct) {
+                        score += q.points;
+                    }
+                });
+
+                const status = score >= quizData.passMarks ? 'পাশ' : 'ফেল';
+                const quote = status === 'পাশ' ? 'অসাধারণ! আরো উঁচুতে উঠো।' : 'হাল ছাড়ো না, পরের বার তুমিই জিতবে!';
+
+                resultDetails.innerHTML = `
+                    <div class="result-summary" id="resultSummary">
+                        <p>নাম: ${studentName}</p>
+                        <p>কুইজ টপিক: ${quizData.topic}</p>
+                        <p>আপনার স্কোর: ${score}/${totalMarks}</p>
+                        <p>ফলাফল: ${status}</p>
+                        <p class="quote">${quote}</p>
+                    </div>
+                    <h3>উত্তর পর্যালোচনা</h3>
+                    ${quizData.questions.map((q, index) => `
+                        <div class="result-card">
+                            <h4>${index + 1}. ${q.question}</h4>
+                            <div class="options">
+                                ${q.options.map((option, i) => {
+                                    let optionClass = '';
+                                    if (i === q.correct) {
+                                        optionClass = 'correct';
+                                    } else if (i === userAnswers[index] && userAnswers[index] !== q.correct) {
+                                        optionClass = 'incorrect';
+                                    }
+                                    return `
+                                        <div class="option ${optionClass}">
+                                            ${option}
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                            <p class="marks">মার্ক: ${q.points}</p>
+                            <p class="explanation">ব্যাখ্যা: ${q.explanation}</p>
+                        </div>
+                    `).join('')}
+                    <button class="download-btn" onclick="downloadResult()">ডাউনলোড রেজাল্ট</button>
+                `;
+
+                quizSection.style.display = 'none';
+                resultSection.style.display = 'block';
+
+                if (status === 'পাশ') {
+                    triggerConfetti();
+                }
+            } catch (error) {
+                console.error('Error in submitQuiz:', error);
+            }
+        }
+
+        // রেজাল্ট ডাউনলোড
+        function downloadResult() {
+            try {
+                const tempContainer = document.createElement('div');
+                tempContainer.style.maxWidth = '850px';
+                tempContainer.style.background = 'rgba(20, 20, 30, 0.9)';
+                tempContainer.style.backdropFilter = 'blur(12px)';
+                tempContainer.style.padding = '40px';
+                tempContainer.style.borderRadius = '20px';
+                tempContainer.style.border = '1px solid rgba(99, 102, 241, 0.3)';
+                tempContainer.style.color = '#e2e8f0';
+                tempContainer.style.fontFamily = '"Inter", sans-serif';
+                tempContainer.style.textAlign = 'center';
+                tempContainer.style.fontSize = '1.2rem';
+                tempContainer.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.6)';
+                let score = 0;
+                quizData.questions.forEach((q, index) => {
+                    if (userAnswers[index] === q.correct) {
+                        score += q.points;
+                    }
+                });
+                const status = score >= quizData.passMarks ? 'পাশ' : 'ফেল';
+                const quote = status === 'পাশ' ? 'অসাধারণ! আরো উঁচুতে উঠো।' : 'হাল ছাড়ো না, পরের বার তুমিই জিতবে!';
+                tempContainer.innerHTML = `
+                    <h1 style="font-family: 'Roboto', sans-serif; font-size: 1rem; color: #a5b4fc; margin-bottom: 20px; text-shadow: 0 0 15px rgba(165, 180, 252, 0.6);">POLYTECHNIC ADMISSION CARE</h1>
+                    <p style="margin: 10px 0;">নাম: ${studentName}</p>
+                    <p style="margin: 10px 0;">কুইজ টপিক: ${quizData.topic}</p>
+                    <p style="margin: 10px 0;">আপনার স্কোর: ${score}/${totalMarks}</p>
+                    <p style="margin: 10px 0;">ফলাফল: ${status}</p>
+                    <p style="font-style: italic; color: #a5b4fc; margin: 20px 0; padding: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 10px;">${quote}</p>
+                    <div class="footer" style="margin-top: 20px; padding: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 10px;">Papel Edu-Care</div>
+                `;
+
+                document.body.appendChild(tempContainer);
+                html2canvas(tempContainer, {
+                    backgroundColor: null,
+                    scale: 2
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.href = canvas.toDataURL('image/png');
+                    link.download = 'quiz_result.png';
+                    link.click();
+                    document.body.removeChild(tempContainer);
+                }).catch(error => {
+                    console.error('Error in html2canvas:', error);
+                });
+            } catch (error) {
+                console.error('Error in downloadResult:', error);
+            }
+        }
+
+        // কনফেটি অ্যানিমেশন
+        function triggerConfetti() {
+            try {
+                const canvas = document.getElementById('confetti');
+                const ctx = canvas.getContext('2d');
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+
+                const confetti = [];
+                const colors = ['#ff4757', '#2ecc71', '#6366f1', '#a5b4fc', '#facc15'];
+
+                for (let i = 0; i < 150; i++) {
+                    confetti.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height - canvas.height,
+                        size: Math.random() * 12 + 5,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        speed: Math.random() * 6 + 3,
+                        angle: Math.random() * 360
+                    });
+                }
+
+                function animateConfetti() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    confetti.forEach(c => {
+                        c.y += c.speed;
+                        c.x += Math.sin(c.angle * Math.PI / 180) * 2;
+                        c.angle += 1;
+                        if (c.y > canvas.height) {
+                            c.y = -c.size;
+                            c.x = Math.random() * canvas.width;
+                        }
+                        ctx.fillStyle = c.color;
+                        ctx.beginPath();
+                        ctx.arc(c.x, c.y, c.size / 2, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+                    requestAnimationFrame(animateConfetti);
+                }
+
+                animateConfetti();
+                setTimeout(() => {
+                    canvas.style.display = 'none';
+                }, 5000);
+            } catch (error) {
+                console.error('Error in triggerConfetti:', error);
+            }
+        }
+    </script>
+</body>
+</html>
